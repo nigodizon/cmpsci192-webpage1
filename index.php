@@ -12,14 +12,16 @@
  * What: Lab Web Page #1
  */
 
-// ------- Global Variables -------
+/************* global variables *************/
 $debug251 = true;
 
 $coname623 = "House_R_Us";
 $coaddr812 = "123 Main St";
 $co_city511 = "Miami FL 33101";
+/************* end global variables *********/
 
-// ------- Debug Control -------
+// ------------------ debug control ------------------
+
 if (!empty($_REQUEST['debug'])) {
     $debug251 = true;
     print "DEBUG turned ON<br>";
@@ -28,20 +30,35 @@ else {
     $debug251 = false;
 }
 
-// ------- Lab 3 -------
+// ------------------ lab 4 ------------------
+
+if ($debug251) {
+    print "Now executing Lab 4<br>";
+}
+
+print "<h2>Lab 4 Assignment</h2>";
+
+display_name_982($coname623);
+display_address_334();
+
+print "<hr>";
+
+// ------------------ lab 3 ------------------
+
 if ($debug251) {
     print "Now executing Lab 3, \$debug251 contains true<br>";
 }
 
 print "<h2>Lab 3 Assignment</h2>";
 
-print "<a href='http://isaiahphpcourse.atwebpages.com/'>Debug OFF</a>";
+print "<a href='?'>Debug OFF</a>";
 print "<br>";
-print "<a href='http://isaiahphpcourse.atwebpages.com/?debug=true'>Debug ON</a>";
+print "<a href='?debug=true'>Debug ON</a>";
 
 print "<hr>";
 
-// ------- Lab 2 -------
+// ------------------ lab 2 ------------------
+
 if ($debug251) {
     print "Now executing Lab 2, \$coname623 contains $coname623<br>";
     print "\$coaddr812 contains $coaddr812<br>";
@@ -55,13 +72,26 @@ print "<b>$co_city511</b>";
 
 print "<hr>";
 
-// ------- Lab 1 -------
+// ------------------ lab 1 ------------------
+
 if ($debug251) {
     print "Now executing Lab 1<br>";
 }
 
 print "<h2>Lab 1 Assignment</h2>";
 print "<p>My Name Is Isaiah Dizon</p>";
+
+// ------------------ lab 4 functions ------------------
+
+function display_name_982($parm) {
+    print "<h1>Name: $parm</h1>";
+}
+
+function display_address_334() {
+    global $coaddr812, $co_city511;
+
+    print "<b><u>Address: $coaddr812 $co_city511</u></b>";
+}
 
 ?>
 </body>
