@@ -34,6 +34,22 @@ else {
     $debug251 = false;
 }
 
+// ------------------ lab 6 ------------------
+
+if ($debug251) {
+    print "Now executing Lab 6<br>";
+}
+
+print "<h2>Lab 6 Assignment</h2>";
+
+print getHeader935($coname623, "lightblue");
+
+print "<br><br>";
+
+print getFooter732("lightgray");
+
+print "<hr>";
+
 // ------------------ lab 5 ------------------
 
 if ($debug251) {
@@ -99,9 +115,32 @@ if ($debug251) {
 print "<h2>Lab 1 Assignment</h2>";
 print "<p>My Name Is Isaiah Dizon</p>";
 
+// ------------------ lab 6 functions ------------------
+
+function getHeader935($company, $color) {
+    $data = "<table style='background-color:$color;width:100%'>";
+    $data .= "<tr><td>";
+    $data .= "<h1 style='text-align:center'>$company</h1>";
+    $data .= "</td></tr></table>";
+
+    return $data;
+}
+
+function getFooter732($color) {
+    global $coname623, $coaddr812, $co_city511;
+
+    $data = "<table style='background-color:$color;width:100%'>";
+    $data .= "<tr><td style='text-align:center'>";
+    $data .= "$coname623<br>";
+    $data .= "$coaddr812<br>";
+    $data .= "$co_city511";
+    $data .= "</td></tr></table>";
+
+    return $data;
+}
+
 // ------------------ lab 5 functions ------------------
 
-// Create array for a Real Estate Web site
 function create_array_908() {
     global $house_array;
 
@@ -115,7 +154,6 @@ function create_array_908() {
     return $house_array;
 }
 
-// Display products using an array parameter
 function display_product_872($array) {
     print "<h3>Current Houses for Sale</h3>";
 
