@@ -9,7 +9,7 @@
 /*
  * Who: Isaiah Dizon
  * What: CMP SCI CS192 Lab Web Page Project
- * When: 11/05/26
+ * When: 11/10/26
  * What: Lab Web Page #1
  */
 
@@ -33,6 +33,32 @@ if (!empty($_REQUEST['debug'])) {
 else {
     $debug251 = false;
 }
+
+// ------------------ lab 7 ------------------
+
+if ($debug251) {
+    print "Now executing Lab 7<br>";
+}
+
+print "<h2>Lab 7 Assignment</h2>";
+
+// Create an object from the Company789 class
+$object593 = new Company789();
+
+// Call and print the header method
+print $object593->getHeader935($object593->name6, "lightblue");
+
+// Separate the header and footer
+print "<br><br>";
+
+// Call and print the footer method
+print $object593->getFooter732("lightgray");
+
+print "<hr>";
+
+// -------- WARNING: CODE SHIFT --------
+// Code above this line is Object Oriented.
+// Code below this line is procedural.
 
 // ------------------ lab 6 ------------------
 
@@ -114,6 +140,39 @@ if ($debug251) {
 
 print "<h2>Lab 1 Assignment</h2>";
 print "<p>My Name Is Isaiah Dizon</p>";
+
+// ------------------ lab 7 class ------------------
+
+class Company789 {
+
+    // Object properties
+    public $name6 = 'Vacay4Sale';
+    private $addr6 = '789 10th St';
+    private $city6 = 'New York NY 10001';
+
+    // Header method
+    public function getHeader935($company, $color) {
+        $data = "<table style='background-color:$color;width:100%'>";
+        $data .= "<tr><td>";
+        $data .= "<h1 style='text-align:center'>$company</h1>";
+        $data .= "</td></tr></table>";
+
+        return $data;
+    }
+
+    // Footer method
+    public function getFooter732($color) {
+        $data = "<table style='background-color:$color;width:100%'>";
+        $data .= "<tr><td style='text-align:center'>";
+        $data .= $this->name6 . "<br>";
+        $data .= $this->addr6 . "<br>";
+        $data .= $this->city6;
+        $data .= "</td></tr></table>";
+
+        return $data;
+    }
+
+} // End Company789 class
 
 // ------------------ lab 6 functions ------------------
 
