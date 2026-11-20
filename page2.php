@@ -10,7 +10,7 @@
 /*
  * Who: Isaiah Dizon
  * What: CMP SCI CS192 Lab Web Page Project
- * When: 11/11/26
+ * When: 11/20/26
  * What: Lab Web Page #2
  */
 
@@ -22,6 +22,9 @@ class Company789 {
     public $name6 = 'Vacay4Sale';
     private $addr6 = '789 10th St';
     private $city6 = 'New York NY 10001';
+
+    // Lab 9 - Default page selection
+    protected $whichpage = "Home";
 
     // Create and return company header
     public function getHeader935($company, $color) {
@@ -60,14 +63,16 @@ class Child209 extends Company789 {
     public $main_url = "http://isaiahphpcourse.atwebpages.com";
     public $main_email = "idizon@my.canyons.edu";
 
+    // Lab 9 - Navigation array
+    private $navbar_array = array();
+
     // Constructor
     public function __construct() {
         $this->name6 = "Isaiah Dizon Cars";
     }
 
-    // Create and return HTML for main information
+    // Create and return company information
     public function main_info925() {
-
         $data = "<strong>Email Address: ";
         $data .= $this->main_email;
         $data .= "</strong>";
@@ -81,18 +86,84 @@ class Child209 extends Company789 {
         return $data;
     }
 
+    // ------------------ lab 9 methods ------------------
+
+    // Create array for navigation bar
+    public function create_navbar_array() {
+        $fullurl = $this->main_url . "/page2.php";
+
+        $this->navbar_array = array(
+            "Home" => "$fullurl?whichpage=Home",
+            "Sales" => "$fullurl?whichpage=Sales",
+            "Support" => "$fullurl?whichpage=Support",
+            "Contacts" => "$fullurl?whichpage=Contacts"
+        );
+    }
+
+    // Create and return the navigation bar
+    public function getNavBar457() {
+        $data = "<table border='1' style='width:100%;text-align:center'>";
+        $data .= "<tr>";
+
+        foreach ($this->navbar_array as $name => $url) {
+            $data .= "<td>";
+            $data .= "<a href='$url'>$name</a>";
+            $data .= "</td>";
+        }
+
+        $data .= "</tr>";
+        $data .= "</table>";
+
+        return $data;
+    }
+
+    // Determine which page to display
+    public function setWhichPage() {
+        if (empty($_GET['whichpage'])) {
+            $this->whichpage = "Home";
+        }
+        else {
+            $page = $_GET['whichpage'];
+
+            if (is_string($page) &&
+                array_key_exists($page, $this->navbar_array)) {
+                $this->whichpage = $page;
+            }
+            else {
+                $this->whichpage = "Home";
+            }
+        }
+    }
+
+    // Create and return the main page content
+    public function getMain844() {
+        $data = "<h1 style='text-align:center'>";
+        $data .= "The " . $this->whichpage . " Page";
+        $data .= "</h1>";
+
+        return $data;
+    }
+
 } // End Child209 class
 
 
 // ------------------ build web page #2 ------------------
 
-// Create a child class object
+// Create the child class object
 $object925 = new Child209();
 
 // Display the inherited company header
 print $object925->getHeader935($object925->name6, "lightblue");
 
-// Display the company's main information
+// Lab 9 - Initialize and display navigation bar
+$object925->create_navbar_array();
+print $object925->getNavBar457();
+
+// Lab 9 - Determine and display selected page
+$object925->setWhichPage();
+print $object925->getMain844();
+
+// Display company information from Lab 8
 print $object925->main_info925();
 
 // Display the inherited company footer
