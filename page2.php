@@ -10,7 +10,6 @@
 /*
  * Who: Isaiah Dizon
  * What: CMP SCI CS192 Lab Web Page Project
- * When: 11/20/26
  * What: Lab Web Page #2
  */
 
@@ -18,12 +17,10 @@
 
 class Company789 {
 
-    // Parent class properties
     public $name6 = 'Vacay4Sale';
     private $addr6 = '789 10th St';
     private $city6 = 'New York NY 10001';
 
-    // Lab 9 - Default page selection
     protected $whichpage = "Home";
 
     // Create and return company header
@@ -55,23 +52,21 @@ class Company789 {
 } // End Company789 parent class
 
 
-// ------------------ lab 8 child class ------------------
+// ------------------ child class ------------------
 
 class Child209 extends Company789 {
 
-    // Child class properties
-    public $main_url = "http://isaiahphpcourse.atwebpages.com";
+    public $main_url = "https://isaiahphpcourse.alwaysdata.net";
     public $main_email = "idizon@my.canyons.edu";
 
-    // Lab 9 - Navigation array
     private $navbar_array = array();
 
-    // Constructor
+    // Lab 8 - Constructor
     public function __construct() {
         $this->name6 = "Isaiah Dizon Cars";
     }
 
-    // Create and return company information
+    // Lab 8 - Company information
     public function main_info925() {
         $data = "<strong>Email Address: ";
         $data .= $this->main_email;
@@ -88,7 +83,7 @@ class Child209 extends Company789 {
 
     // ------------------ lab 9 methods ------------------
 
-    // Create array for navigation bar
+    // Create navigation array
     public function create_navbar_array() {
         $fullurl = $this->main_url . "/page2.php";
 
@@ -100,7 +95,7 @@ class Child209 extends Company789 {
         );
     }
 
-    // Create and return the navigation bar
+    // Create and return navigation bar
     public function getNavBar457() {
         $data = "<table border='1' style='width:100%;text-align:center'>";
         $data .= "<tr>";
@@ -111,13 +106,12 @@ class Child209 extends Company789 {
             $data .= "</td>";
         }
 
-        $data .= "</tr>";
-        $data .= "</table>";
+        $data .= "</tr></table>";
 
         return $data;
     }
 
-    // Determine which page to display
+    // Determine the selected page
     public function setWhichPage() {
         if (empty($_GET['whichpage'])) {
             $this->whichpage = "Home";
@@ -135,11 +129,75 @@ class Child209 extends Company789 {
         }
     }
 
-    // Create and return the main page content
+    // ------------------ lab 10 methods ------------------
+
+    // Read car.txt and return an HTML table
+    public function displaySpecials535() {
+        $data = "<h3>Weekly Specials</h3>";
+        $data .= "<table border='1' style='width:100%'>";
+
+        // Column headings
+        $data .= "<tr>";
+        $data .= "<th>Product ID</th>";
+        $data .= "<th>Vehicle</th>";
+        $data .= "<th>Price</th>";
+        $data .= "<th>Description</th>";
+        $data .= "</tr>";
+
+        // Open the product file
+        $filename = __DIR__ . "/car.txt";
+
+        $file = @fopen($filename, "r");
+
+        if ($file === false) {
+            $data .= "<tr><td colspan='4'>";
+            $data .= "Unable to open car.txt";
+            $data .= "</td></tr>";
+        }
+        else {
+            // Read each line of the file
+            while (($line = fgets($file)) !== false) {
+
+                // Split each product into four columns
+                $myarray = explode(",", $line);
+
+                if (count($myarray) < 4) {
+                    continue;
+                }
+
+                $data .= "<tr>";
+
+                foreach ($myarray as $item) {
+                    $item = htmlspecialchars(
+                        trim($item),
+                        ENT_QUOTES,
+                        'UTF-8'
+                    );
+                    $data .= "<td>$item</td>";
+                }
+
+                $data .= "</tr>";
+            }
+
+            // Close the file
+            fclose($file);
+        }
+
+        $data .= "</table>";
+
+        return $data;
+    }
+
+    // Create the main section of the website
     public function getMain844() {
         $data = "<h1 style='text-align:center'>";
         $data .= "The " . $this->whichpage . " Page";
         $data .= "</h1>";
+
+        // Lab 10 - Display specials on the Home page
+        if ($this->whichpage == "Home") {
+            $data .= $this->displaySpecials535();
+        }
 
         return $data;
     }
@@ -152,21 +210,21 @@ class Child209 extends Company789 {
 // Create the child class object
 $object925 = new Child209();
 
-// Display the inherited company header
+// Display company header
 print $object925->getHeader935($object925->name6, "lightblue");
 
-// Lab 9 - Initialize and display navigation bar
+// Initialize and display navigation bar
 $object925->create_navbar_array();
 print $object925->getNavBar457();
 
-// Lab 9 - Determine and display selected page
+// Determine and display main page
 $object925->setWhichPage();
 print $object925->getMain844();
 
-// Display company information from Lab 8
+// Display company information
 print $object925->main_info925();
 
-// Display the inherited company footer
+// Display company footer
 print $object925->getFooter732("lightgray");
 
 ?>
