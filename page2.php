@@ -57,7 +57,7 @@ class Company789 {
     // Connect to and select the MySQL database
     public function getDatabase673() {
 
-        $config = require __DIR__ . "/../db_config.php";
+        $config = require __DIR__ . "/../DB/db_config.php";
 
         $dbname = $config['database'];
 
