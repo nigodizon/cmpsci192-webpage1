@@ -112,12 +112,14 @@ class Child209 extends Company789 {
 
     private $navbar_array = array();
 
-    // Lab 8 - Constructor
+    // ------------------ lab 8 methods ------------------
+
+    // Constructor
     public function __construct() {
         $this->name6 = "Isaiah Dizon Cars";
     }
 
-    // Lab 8 - Company information
+    // Create and return company information
     public function main_info925() {
         $data = "<strong>Email Address: ";
         $data .= $this->main_email;
@@ -238,14 +240,106 @@ class Child209 extends Company789 {
         return $data;
     }
 
+    // ------------------ lab 12 methods ------------------
+
+    // Read products from MySQL and return an HTML table
+    public function getSqlProduct909() {
+
+        $data = "<h3>Cars for Sale</h3>";
+        $data .= "<table border='1' style='width:100%'>";
+
+        // Column headings
+        $data .= "<tr>";
+        $data .= "<th>Product ID</th>";
+        $data .= "<th>Vehicle</th>";
+        $data .= "<th>Price</th>";
+        $data .= "<th>Description</th>";
+        $data .= "</tr>";
+
+        // Check database connection
+        if (!($this->sqldb8 instanceof mysqli)) {
+            $data .= "<tr><td colspan='4'>";
+            $data .= "Database connection unavailable";
+            $data .= "</td></tr>";
+        }
+        else {
+            try {
+                // Retrieve products from CarProduct
+                $sql = "SELECT productID, productName, price, ";
+                $sql .= "productDescription FROM CarProduct";
+                $sql .= " ORDER BY productID";
+
+                $result = $this->sqldb8->query($sql);
+
+                if ($result === false) {
+                    throw new Exception("SQL query failed");
+                }
+
+                // Display each database record
+                while ($row = $result->fetch_assoc()) {
+
+                    $data .= "<tr>";
+
+                    $data .= "<td>" .
+                        htmlspecialchars((string)$row['productID']) .
+                        "</td>";
+
+                    $data .= "<td>" .
+                        htmlspecialchars($row['productName']) .
+                        "</td>";
+
+                    $data .= "<td>" .
+                        htmlspecialchars((string)$row['price']) .
+                        "</td>";
+
+                    $data .= "<td>" .
+                        htmlspecialchars($row['productDescription']) .
+                        "</td>";
+
+                    $data .= "</tr>";
+                }
+
+                $result->free();
+            }
+            catch (Exception $e) {
+                error_log("Lab 12 SQL error: " . $e->getMessage());
+
+                $data .= "<tr><td colspan='4'>";
+                $data .= "Unable to retrieve database products";
+                $data .= "</td></tr>";
+            }
+        }
+
+        $data .= "</table>";
+
+        return $data;
+    }
+
     // Create the main section of the website
     public function getMain844() {
+
+        $page = ucfirst($this->whichpage);
+
         $data = "<h1 style='text-align:center'>";
-        $data .= "The " . $this->whichpage . " Page";
+        $data .= "The $page Page";
         $data .= "</h1>";
 
-        if ($this->whichpage == "Home") {
+        if ($page == "Home") {
+            // Lab 10 - Products from car.txt
             $data .= $this->displaySpecials535();
+        }
+        else if ($page == "Sales") {
+            // Lab 12 - Products from MySQL
+            $data .= $this->getSqlProduct909();
+        }
+        else if ($page == "Support") {
+            // Support page content added in future labs
+        }
+        else if ($page == "Contacts") {
+            // Contacts page content added in future labs
+        }
+        else {
+            $data = "<h1>Error Unknown web page requested ($page)</h1>";
         }
 
         return $data;
@@ -259,7 +353,7 @@ class Child209 extends Company789 {
 // Create the child class object
 $object925 = new Child209();
 
-// Lab 11 - Connect to the database FIRST
+// Lab 11 - Connect to MySQL FIRST
 $object925->getDatabase673();
 
 // Display company header
@@ -272,7 +366,7 @@ print $object925->getHeader935(
 $object925->create_navbar_array();
 print $object925->getNavBar457();
 
-// Determine and display main page
+// Determine and display selected page
 $object925->setWhichPage();
 print $object925->getMain844();
 
@@ -282,7 +376,7 @@ print $object925->main_info925();
 // Display company footer
 print $object925->getFooter732("lightgray");
 
-// Lab 11 - Close the database LAST
+// Lab 11 - Close MySQL connection LAST
 $object925->closeDatabase463();
 
 ?>
