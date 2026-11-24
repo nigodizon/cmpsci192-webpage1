@@ -1,0 +1,3 @@
+# Ignore database credentials
+db_config.php
+DB/db_config.php

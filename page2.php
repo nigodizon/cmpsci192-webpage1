@@ -23,6 +23,9 @@ class Company789 {
 
     protected $whichpage = "Home";
 
+    // Lab 11 - Database connection
+    protected $sqldb8 = null;
+
     // Create and return company header
     public function getHeader935($company, $color) {
         $data = "<table style='background-color:$color;width:100%'>";
@@ -47,6 +50,54 @@ class Company789 {
         $data .= "</td></tr></table>";
 
         return $data;
+    }
+
+    // ------------------ lab 11 methods ------------------
+
+    // Connect to and select the MySQL database
+    public function getDatabase673() {
+
+        $config = require __DIR__ . "/../db_config.php";
+
+        $dbname = $config['database'];
+
+        try {
+            // Connect to the database server
+            $this->sqldb8 = new mysqli(
+                $config['host'],
+                $config['username'],
+                $config['password']
+            );
+
+            // Select the database
+            if (!$this->sqldb8->select_db($dbname)) {
+                throw new Exception("Database selection failed");
+            }
+
+            print "<b>Database $dbname connect and select complete</b><br>";
+        }
+        catch (Exception $e) {
+            if ($this->sqldb8 instanceof mysqli) {
+                $this->sqldb8->close();
+            }
+
+            $this->sqldb8 = null;
+
+            error_log("Database connection failed: " . $e->getMessage());
+
+            print "<b>Database $dbname connect and select failed</b><br>";
+        }
+    }
+
+    // Close the MySQL database connection
+    public function closeDatabase463() {
+
+        if ($this->sqldb8 instanceof mysqli) {
+            $this->sqldb8->close();
+            $this->sqldb8 = null;
+        }
+
+        print "<b>Database closed</b><br>";
     }
 
 } // End Company789 parent class
@@ -146,7 +197,6 @@ class Child209 extends Company789 {
 
         // Open the product file
         $filename = __DIR__ . "/car.txt";
-
         $file = @fopen($filename, "r");
 
         if ($file === false) {
@@ -158,7 +208,7 @@ class Child209 extends Company789 {
             // Read each line of the file
             while (($line = fgets($file)) !== false) {
 
-                // Split each product into four columns
+                // Split each product into columns
                 $myarray = explode(",", $line);
 
                 if (count($myarray) < 4) {
@@ -173,13 +223,13 @@ class Child209 extends Company789 {
                         ENT_QUOTES,
                         'UTF-8'
                     );
+
                     $data .= "<td>$item</td>";
                 }
 
                 $data .= "</tr>";
             }
 
-            // Close the file
             fclose($file);
         }
 
@@ -194,7 +244,6 @@ class Child209 extends Company789 {
         $data .= "The " . $this->whichpage . " Page";
         $data .= "</h1>";
 
-        // Lab 10 - Display specials on the Home page
         if ($this->whichpage == "Home") {
             $data .= $this->displaySpecials535();
         }
@@ -210,8 +259,14 @@ class Child209 extends Company789 {
 // Create the child class object
 $object925 = new Child209();
 
+// Lab 11 - Connect to the database FIRST
+$object925->getDatabase673();
+
 // Display company header
-print $object925->getHeader935($object925->name6, "lightblue");
+print $object925->getHeader935(
+    $object925->name6,
+    "lightblue"
+);
 
 // Initialize and display navigation bar
 $object925->create_navbar_array();
@@ -226,6 +281,9 @@ print $object925->main_info925();
 
 // Display company footer
 print $object925->getFooter732("lightgray");
+
+// Lab 11 - Close the database LAST
+$object925->closeDatabase463();
 
 ?>
 </body>
